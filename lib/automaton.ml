@@ -15,7 +15,8 @@ end) = struct
       }
 
     let print_lines idx tr =
-      List.map ~f: (fun arr -> Arrow.print arr ^ "-> " ^ Id.print idx) tr.arrows
+      (* reverses so transitions are added at the end *)
+      List.rev_map ~f: (fun arr -> Arrow.print arr ^ "-> " ^ Id.print idx) tr.arrows
   end
 
   module State = struct
@@ -28,7 +29,8 @@ end) = struct
       let trs = Array.init num_sts ~f: (fun dst ->
         { Transition.arrows = trs |>
             List.filter ~f: (fun (tdst, _) -> tdst = dst) |>
-            List.map ~f: (fun (_, arr) -> arr)
+            (* reverses so transitions are added at the end *)
+            List.rev_map ~f: (fun (_, arr) -> arr)
         }
       ) in
       { transitions = trs;
@@ -43,7 +45,9 @@ end) = struct
           "*"
         else
           String.concat ~sep: "\n   +" (
-            List.concat_mapi ~f: Transition.print_lines (Array.to_list st.transitions)
+            st.transitions |>
+            Array.to_list |>
+            List.concat_mapi ~f: Transition.print_lines
           )
       )
   end
@@ -71,8 +75,8 @@ end) = struct
       ) [|st|];
     }
 
-  let add_transition (src, arr, dst) atm =
-    let st = Array.get atm.states src in
+  let add_transition atm (src, arr, dst) =
+    let st = Array.get !atm.states src in
     let ts = Array.get st.transitions dst in
     let ts = { Transition.arrows = arr :: ts.arrows; } in
     Array.set st.transitions dst ts

@@ -1,3 +1,6 @@
+(** Nondeterministic Finite Automata.
+    Each arrow can only consume one letter or epsilon. *)
+
 open Core
 
 module Arrow = struct

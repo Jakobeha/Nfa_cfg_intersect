@@ -27,13 +27,13 @@ cfg:
   ;
 cfg_var:
   | id = Ident; Space; Dash; Arrow_head; Space; dvs = separated_nonempty_list(Bar, cfg_derivation)
-  { (id, dvs) }
+  { (id, { Cfg.Var.derivations = dvs }) }
   ;
 cfg_derivation:
   | l = Letter
   { Cfg.Derivation.Terminal l }
-  | v1 = Ident; v2 = Ident
-  { Cfg.Derivation.NonTerminal (v1, v2) }
+  | vs = nonempty_list(Ident)
+  { Cfg.Derivation.NonTerminal vs }
   ;
 pda:
   | sts = automaton(pda_arrow); Eof
@@ -67,8 +67,13 @@ state_extra(arrow):
   | arr = arrow; Arrow_head; Space; dst = Ident
   { (dst, arr) }
 pda_arrow:
-  | Open_brace; csm = Letter; Comma; pop = Letter; Dash; Arrow_head; psh = Letter; Close_brace; Dash
-  { { Pda.Arrow.pop = pop; push = psh; consume = csm; } }
+  | Open_brace; csm = Letter; Comma; pops = nonempty_list(free_letter); Dash; Arrow_head; pshs = nonempty_list(free_letter); Close_brace; Dash
+  { { Pda.Arrow.consume = csm; pops = Word.of_letters pops; pushes = Word.of_letters pshs; } }
+%inline free_letter:
+  | a = Letter
+  { a }
+  | a = Ident
+  { Id.to_letter a }
 nfa_arrow:
   | csm = Letter; Dash
   { { Nfa.Arrow.consume = csm; } }
