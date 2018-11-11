@@ -2,7 +2,7 @@ open OUnit2
 open Test_util
 
 let assert_parse_print f_parse f_print inp =
-  assert_equal_str inp (f_print (f_parse (Lexing.from_string (String.trim inp))))
+  assert_equal_str ~exp: inp ~act: (f_print (f_parse (Lexing.from_string (String.trim inp))))
 
 let test_cfg _ =
   assert_parse_print Lib.Parse.cfg Lib.Cfg.print {|

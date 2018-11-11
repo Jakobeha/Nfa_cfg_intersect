@@ -7,7 +7,11 @@ module Make (Arrow : sig
 end) = struct
   module Transition = struct
     type t =
-      { arrows : Arrow.t List.t
+      { arrows : Arrow.t List.t;
+      }
+
+    let empty =
+      { arrows = [];
       }
 
     let print_lines idx tr =
@@ -17,7 +21,7 @@ end) = struct
   module State = struct
     type t =
       { transitions : Transition.t Array.t;
-        is_accept : Bool.t
+        is_accept : Bool.t;
       }
 
     let parse num_sts acp trs =
@@ -47,6 +51,31 @@ end) = struct
   type t =
       { states : State.t Array.t
       }
+
+  let new_empty () = ref
+    { states = [||]
+    }
+
+  let add_empty_state atm acp =
+    let new_num_sts = Array.length !atm.states + 1 in
+    let st =
+      { State.transitions = Array.init new_num_sts ~f: (fun _ -> Transition.empty);
+        is_accept = acp;
+      } in
+    atm := { states = Array.append (
+        Array.map ~f: (fun st ->
+          { State.transitions = Array.append st.transitions [|Transition.empty|];
+            is_accept = st.is_accept;
+          }
+        ) !atm.states
+      ) [|st|];
+    }
+
+  let add_transition (src, arr, dst) atm =
+    let st = Array.get atm.states src in
+    let ts = Array.get st.transitions dst in
+    let ts = { Transition.arrows = arr :: ts.arrows; } in
+    Array.set st.transitions dst ts
 
   let parse sts =
     assert (not (List.is_empty sts));

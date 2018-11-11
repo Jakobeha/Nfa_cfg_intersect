@@ -50,6 +50,50 @@ type t =
     allow_empty : Bool.t;
   }
 
+let to_pda cfg =
+  let pda = Pda.new_empty () in
+  (* Initial state *)
+  Pda.add_empty_state pda false;
+  (* Derivations state *)
+  Pda.add_empty_state pda false;
+  (* Final state *)
+  Pda.add_empty_state pda true;
+  let start_id = 0
+  and mid_id = 1
+  and end_id = 2 in
+  (* Push the start state onto the stack *)
+  Pda.add_transition pda (
+    start_id,
+    { Pda.Arrow.consume = Letter.epsilon; pops = ""; pushes = "$S"; },
+    mid_id
+  );
+  Pda.add_transition pda (
+    mid_id,
+    { Pda.Arrow.consume = Letter.epsilon; pops = "$"; pushes = ""; },
+    end_id
+  );
+  (* For every possible derivation, add a transition where the PDA
+     "chooses" the derivation and follows it. *)
+  Array.iteri ~f: (fun idx var ->
+    List.iter ~f: (fun dv ->
+      let arr =
+        match dv with
+        | Cfg.Derivation.Terminal l ->
+          { Pda.Arrow.consume = l;
+            pops = Letter.to_string (Id.to_letter idx);
+            pushes = "";
+          }
+        | NonTerminal (v1, v2) ->
+          { Pda.Arrow.consume = Letter.epsilon;
+            pops = Letter.to_string (Id.to_letter idx);
+            pushes = String.of_char_list [Id.to_letter v2, Id.to_letter v1];
+          } in
+      Pda.add_transition pda (mid_id, arr, mid_id)
+    ) var.derivations
+  ) cfg.variables;
+  (* Generate a state for every variable *)
+  !pda
+
 let parse vars =
   assert (not (List.is_empty vars));
   let vars = Util.validate_id_order vars in
