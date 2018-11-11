@@ -1,0 +1,6 @@
+.vscode
+.history
+.git
+.merlin
+_build
+descript-lang.install

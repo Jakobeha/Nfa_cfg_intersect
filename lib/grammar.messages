@@ -1,0 +1,825 @@
+pda: Ident At Space Dash Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace Dash Arrow_head Space Ident Star 
+##
+## Ends in an error in state: 91.
+##
+## state(pda_arrow) -> Ident At Space Dash pda_arrow Arrow_head Space Ident . list(state_extra(pda_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident At Space Dash pda_arrow Arrow_head Space Ident 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident At Space Dash Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace Dash Arrow_head Space Star 
+##
+## Ends in an error in state: 90.
+##
+## state(pda_arrow) -> Ident At Space Dash pda_arrow Arrow_head Space . Ident list(state_extra(pda_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident At Space Dash pda_arrow Arrow_head Space 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident At Space Dash Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace Dash Arrow_head Star 
+##
+## Ends in an error in state: 89.
+##
+## state(pda_arrow) -> Ident At Space Dash pda_arrow Arrow_head . Space Ident list(state_extra(pda_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident At Space Dash pda_arrow Arrow_head 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident At Space Dash Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace Dash Star 
+##
+## Ends in an error in state: 88.
+##
+## state(pda_arrow) -> Ident At Space Dash pda_arrow . Arrow_head Space Ident list(state_extra(pda_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident At Space Dash pda_arrow 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident At Space Dash Space 
+##
+## Ends in an error in state: 86.
+##
+## state(pda_arrow) -> Ident At Space Dash . Star [ Newline Eof ]
+## state(pda_arrow) -> Ident At Space Dash . pda_arrow Arrow_head Space Ident list(state_extra(pda_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident At Space Dash 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident At Space Star 
+##
+## Ends in an error in state: 85.
+##
+## state(pda_arrow) -> Ident At Space . Dash Star [ Newline Eof ]
+## state(pda_arrow) -> Ident At Space . Dash pda_arrow Arrow_head Space Ident list(state_extra(pda_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident At Space 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident At Star 
+##
+## Ends in an error in state: 84.
+##
+## state(pda_arrow) -> Ident At . Space Dash Star [ Newline Eof ]
+## state(pda_arrow) -> Ident At . Space Dash pda_arrow Arrow_head Space Ident list(state_extra(pda_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident At 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace Dash Arrow_head Space Ident Newline_3_space Plus Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace Dash Arrow_head Space Ident Star 
+##
+## Ends in an error in state: 81.
+##
+## list(state_extra(pda_arrow)) -> state_extra(pda_arrow) . list(state_extra(pda_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## state_extra(pda_arrow) 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace Dash Arrow_head Space Ident Newline_3_space Plus Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace Dash Arrow_head Space Star 
+##
+## Ends in an error in state: 79.
+##
+## state_extra(pda_arrow) -> Newline_3_space Plus pda_arrow Arrow_head Space . Ident [ Newline_3_space Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Newline_3_space Plus pda_arrow Arrow_head Space 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace Dash Arrow_head Space Ident Newline_3_space Plus Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace Dash Arrow_head Star 
+##
+## Ends in an error in state: 78.
+##
+## state_extra(pda_arrow) -> Newline_3_space Plus pda_arrow Arrow_head . Space Ident [ Newline_3_space Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Newline_3_space Plus pda_arrow Arrow_head 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace Dash Arrow_head Space Ident Newline_3_space Plus Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace Dash Star 
+##
+## Ends in an error in state: 77.
+##
+## state_extra(pda_arrow) -> Newline_3_space Plus pda_arrow . Arrow_head Space Ident [ Newline_3_space Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Newline_3_space Plus pda_arrow 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace Dash Arrow_head Space Ident Newline_3_space Plus Star 
+##
+## Ends in an error in state: 76.
+##
+## state_extra(pda_arrow) -> Newline_3_space Plus . pda_arrow Arrow_head Space Ident [ Newline_3_space Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Newline_3_space Plus 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace Dash Arrow_head Space Ident Newline_3_space Star 
+##
+## Ends in an error in state: 75.
+##
+## state_extra(pda_arrow) -> Newline_3_space . Plus pda_arrow Arrow_head Space Ident [ Newline_3_space Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Newline_3_space 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace Dash Arrow_head Space Ident Star 
+##
+## Ends in an error in state: 74.
+##
+## state(pda_arrow) -> Ident Space Space Dash pda_arrow Arrow_head Space Ident . list(state_extra(pda_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident Space Space Dash pda_arrow Arrow_head Space Ident 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace Dash Arrow_head Space Star 
+##
+## Ends in an error in state: 73.
+##
+## state(pda_arrow) -> Ident Space Space Dash pda_arrow Arrow_head Space . Ident list(state_extra(pda_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident Space Space Dash pda_arrow Arrow_head Space 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace Dash Arrow_head Star 
+##
+## Ends in an error in state: 72.
+##
+## state(pda_arrow) -> Ident Space Space Dash pda_arrow Arrow_head . Space Ident list(state_extra(pda_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident Space Space Dash pda_arrow Arrow_head 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace Dash Star 
+##
+## Ends in an error in state: 71.
+##
+## state(pda_arrow) -> Ident Space Space Dash pda_arrow . Arrow_head Space Ident list(state_extra(pda_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident Space Space Dash pda_arrow 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace Star 
+##
+## Ends in an error in state: 69.
+##
+## pda_arrow -> Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace . Dash [ Arrow_head ]
+##
+## The known suffix of the stack is as follows:
+## Open_brace Letter Comma Letter Dash Arrow_head Letter Close_brace 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Open_brace Letter Comma Letter Dash Arrow_head Letter Star 
+##
+## Ends in an error in state: 68.
+##
+## pda_arrow -> Open_brace Letter Comma Letter Dash Arrow_head Letter . Close_brace Dash [ Arrow_head ]
+##
+## The known suffix of the stack is as follows:
+## Open_brace Letter Comma Letter Dash Arrow_head Letter 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Open_brace Letter Comma Letter Dash Arrow_head Star 
+##
+## Ends in an error in state: 67.
+##
+## pda_arrow -> Open_brace Letter Comma Letter Dash Arrow_head . Letter Close_brace Dash [ Arrow_head ]
+##
+## The known suffix of the stack is as follows:
+## Open_brace Letter Comma Letter Dash Arrow_head 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Open_brace Letter Comma Letter Dash Star 
+##
+## Ends in an error in state: 66.
+##
+## pda_arrow -> Open_brace Letter Comma Letter Dash . Arrow_head Letter Close_brace Dash [ Arrow_head ]
+##
+## The known suffix of the stack is as follows:
+## Open_brace Letter Comma Letter Dash 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Open_brace Letter Comma Letter Star 
+##
+## Ends in an error in state: 65.
+##
+## pda_arrow -> Open_brace Letter Comma Letter . Dash Arrow_head Letter Close_brace Dash [ Arrow_head ]
+##
+## The known suffix of the stack is as follows:
+## Open_brace Letter Comma Letter 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Open_brace Letter Comma Star 
+##
+## Ends in an error in state: 64.
+##
+## pda_arrow -> Open_brace Letter Comma . Letter Dash Arrow_head Letter Close_brace Dash [ Arrow_head ]
+##
+## The known suffix of the stack is as follows:
+## Open_brace Letter Comma 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Open_brace Letter Star 
+##
+## Ends in an error in state: 63.
+##
+## pda_arrow -> Open_brace Letter . Comma Letter Dash Arrow_head Letter Close_brace Dash [ Arrow_head ]
+##
+## The known suffix of the stack is as follows:
+## Open_brace Letter 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Open_brace Star 
+##
+## Ends in an error in state: 62.
+##
+## pda_arrow -> Open_brace . Letter Comma Letter Dash Arrow_head Letter Close_brace Dash [ Arrow_head ]
+##
+## The known suffix of the stack is as follows:
+## Open_brace 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Space 
+##
+## Ends in an error in state: 60.
+##
+## state(pda_arrow) -> Ident Space Space Dash . Star [ Newline Eof ]
+## state(pda_arrow) -> Ident Space Space Dash . pda_arrow Arrow_head Space Ident list(state_extra(pda_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident Space Space Dash 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Star Newline Star 
+##
+## Ends in an error in state: 94.
+##
+## separated_nonempty_list(Newline,state(pda_arrow)) -> state(pda_arrow) Newline . separated_nonempty_list(Newline,state(pda_arrow)) [ Eof ]
+##
+## The known suffix of the stack is as follows:
+## state(pda_arrow) Newline 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Dash Star Star 
+##
+## Ends in an error in state: 93.
+##
+## separated_nonempty_list(Newline,state(pda_arrow)) -> state(pda_arrow) . [ Eof ]
+## separated_nonempty_list(Newline,state(pda_arrow)) -> state(pda_arrow) . Newline separated_nonempty_list(Newline,state(pda_arrow)) [ Eof ]
+##
+## The known suffix of the stack is as follows:
+## state(pda_arrow) 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Space Star 
+##
+## Ends in an error in state: 59.
+##
+## state(pda_arrow) -> Ident Space Space . Dash Star [ Newline Eof ]
+## state(pda_arrow) -> Ident Space Space . Dash pda_arrow Arrow_head Space Ident list(state_extra(pda_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident Space Space 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Space Star 
+##
+## Ends in an error in state: 58.
+##
+## state(pda_arrow) -> Ident Space . Space Dash Star [ Newline Eof ]
+## state(pda_arrow) -> Ident Space . Space Dash pda_arrow Arrow_head Space Ident list(state_extra(pda_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident Space 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Ident Star 
+##
+## Ends in an error in state: 57.
+##
+## state(pda_arrow) -> Ident . Space Space Dash Star [ Newline Eof ]
+## state(pda_arrow) -> Ident . At Space Dash Star [ Newline Eof ]
+## state(pda_arrow) -> Ident . Space Space Dash pda_arrow Arrow_head Space Ident list(state_extra(pda_arrow)) [ Newline Eof ]
+## state(pda_arrow) -> Ident . At Space Dash pda_arrow Arrow_head Space Ident list(state_extra(pda_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+pda: Star 
+##
+## Ends in an error in state: 56.
+##
+## pda' -> . pda [ # ]
+##
+## The known suffix of the stack is as follows:
+## 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident At Space Dash Letter Dash Arrow_head Space Ident Star 
+##
+## Ends in an error in state: 47.
+##
+## state(nfa_arrow) -> Ident At Space Dash nfa_arrow Arrow_head Space Ident . list(state_extra(nfa_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident At Space Dash nfa_arrow Arrow_head Space Ident 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident At Space Dash Letter Dash Arrow_head Space Star 
+##
+## Ends in an error in state: 46.
+##
+## state(nfa_arrow) -> Ident At Space Dash nfa_arrow Arrow_head Space . Ident list(state_extra(nfa_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident At Space Dash nfa_arrow Arrow_head Space 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident At Space Dash Letter Dash Arrow_head Star 
+##
+## Ends in an error in state: 45.
+##
+## state(nfa_arrow) -> Ident At Space Dash nfa_arrow Arrow_head . Space Ident list(state_extra(nfa_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident At Space Dash nfa_arrow Arrow_head 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident At Space Dash Letter Dash Star 
+##
+## Ends in an error in state: 44.
+##
+## state(nfa_arrow) -> Ident At Space Dash nfa_arrow . Arrow_head Space Ident list(state_extra(nfa_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident At Space Dash nfa_arrow 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident At Space Dash Space 
+##
+## Ends in an error in state: 42.
+##
+## state(nfa_arrow) -> Ident At Space Dash . Star [ Newline Eof ]
+## state(nfa_arrow) -> Ident At Space Dash . nfa_arrow Arrow_head Space Ident list(state_extra(nfa_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident At Space Dash 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident At Space Star 
+##
+## Ends in an error in state: 41.
+##
+## state(nfa_arrow) -> Ident At Space . Dash Star [ Newline Eof ]
+## state(nfa_arrow) -> Ident At Space . Dash nfa_arrow Arrow_head Space Ident list(state_extra(nfa_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident At Space 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident At Star 
+##
+## Ends in an error in state: 40.
+##
+## state(nfa_arrow) -> Ident At . Space Dash Star [ Newline Eof ]
+## state(nfa_arrow) -> Ident At . Space Dash nfa_arrow Arrow_head Space Ident list(state_extra(nfa_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident At 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident Space Space Dash Letter Dash Arrow_head Space Ident Newline_3_space Plus Letter Dash Arrow_head Space Ident Star 
+##
+## Ends in an error in state: 37.
+##
+## list(state_extra(nfa_arrow)) -> state_extra(nfa_arrow) . list(state_extra(nfa_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## state_extra(nfa_arrow) 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident Space Space Dash Letter Dash Arrow_head Space Ident Newline_3_space Plus Letter Dash Arrow_head Space Star 
+##
+## Ends in an error in state: 35.
+##
+## state_extra(nfa_arrow) -> Newline_3_space Plus nfa_arrow Arrow_head Space . Ident [ Newline_3_space Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Newline_3_space Plus nfa_arrow Arrow_head Space 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident Space Space Dash Letter Dash Arrow_head Space Ident Newline_3_space Plus Letter Dash Arrow_head Star 
+##
+## Ends in an error in state: 34.
+##
+## state_extra(nfa_arrow) -> Newline_3_space Plus nfa_arrow Arrow_head . Space Ident [ Newline_3_space Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Newline_3_space Plus nfa_arrow Arrow_head 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident Space Space Dash Letter Dash Arrow_head Space Ident Newline_3_space Plus Letter Dash Star 
+##
+## Ends in an error in state: 33.
+##
+## state_extra(nfa_arrow) -> Newline_3_space Plus nfa_arrow . Arrow_head Space Ident [ Newline_3_space Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Newline_3_space Plus nfa_arrow 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident Space Space Dash Letter Dash Arrow_head Space Ident Newline_3_space Plus Star 
+##
+## Ends in an error in state: 32.
+##
+## state_extra(nfa_arrow) -> Newline_3_space Plus . nfa_arrow Arrow_head Space Ident [ Newline_3_space Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Newline_3_space Plus 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident Space Space Dash Letter Dash Arrow_head Space Ident Newline_3_space Star 
+##
+## Ends in an error in state: 31.
+##
+## state_extra(nfa_arrow) -> Newline_3_space . Plus nfa_arrow Arrow_head Space Ident [ Newline_3_space Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Newline_3_space 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident Space Space Dash Letter Dash Arrow_head Space Ident Star 
+##
+## Ends in an error in state: 30.
+##
+## state(nfa_arrow) -> Ident Space Space Dash nfa_arrow Arrow_head Space Ident . list(state_extra(nfa_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident Space Space Dash nfa_arrow Arrow_head Space Ident 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident Space Space Dash Letter Dash Arrow_head Space Star 
+##
+## Ends in an error in state: 29.
+##
+## state(nfa_arrow) -> Ident Space Space Dash nfa_arrow Arrow_head Space . Ident list(state_extra(nfa_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident Space Space Dash nfa_arrow Arrow_head Space 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident Space Space Dash Letter Dash Arrow_head Star 
+##
+## Ends in an error in state: 28.
+##
+## state(nfa_arrow) -> Ident Space Space Dash nfa_arrow Arrow_head . Space Ident list(state_extra(nfa_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident Space Space Dash nfa_arrow Arrow_head 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident Space Space Dash Letter Dash Star 
+##
+## Ends in an error in state: 27.
+##
+## state(nfa_arrow) -> Ident Space Space Dash nfa_arrow . Arrow_head Space Ident list(state_extra(nfa_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident Space Space Dash nfa_arrow 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident Space Space Dash Letter Star 
+##
+## Ends in an error in state: 25.
+##
+## nfa_arrow -> Letter . Dash [ Arrow_head ]
+##
+## The known suffix of the stack is as follows:
+## Letter 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident Space Space Dash Space 
+##
+## Ends in an error in state: 23.
+##
+## state(nfa_arrow) -> Ident Space Space Dash . Star [ Newline Eof ]
+## state(nfa_arrow) -> Ident Space Space Dash . nfa_arrow Arrow_head Space Ident list(state_extra(nfa_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident Space Space Dash 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident Space Space Dash Star Newline Star 
+##
+## Ends in an error in state: 50.
+##
+## separated_nonempty_list(Newline,state(nfa_arrow)) -> state(nfa_arrow) Newline . separated_nonempty_list(Newline,state(nfa_arrow)) [ Eof ]
+##
+## The known suffix of the stack is as follows:
+## state(nfa_arrow) Newline 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident Space Space Dash Star Star 
+##
+## Ends in an error in state: 49.
+##
+## separated_nonempty_list(Newline,state(nfa_arrow)) -> state(nfa_arrow) . [ Eof ]
+## separated_nonempty_list(Newline,state(nfa_arrow)) -> state(nfa_arrow) . Newline separated_nonempty_list(Newline,state(nfa_arrow)) [ Eof ]
+##
+## The known suffix of the stack is as follows:
+## state(nfa_arrow) 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident Space Space Star 
+##
+## Ends in an error in state: 22.
+##
+## state(nfa_arrow) -> Ident Space Space . Dash Star [ Newline Eof ]
+## state(nfa_arrow) -> Ident Space Space . Dash nfa_arrow Arrow_head Space Ident list(state_extra(nfa_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident Space Space 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident Space Star 
+##
+## Ends in an error in state: 21.
+##
+## state(nfa_arrow) -> Ident Space . Space Dash Star [ Newline Eof ]
+## state(nfa_arrow) -> Ident Space . Space Dash nfa_arrow Arrow_head Space Ident list(state_extra(nfa_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident Space 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Ident Star 
+##
+## Ends in an error in state: 20.
+##
+## state(nfa_arrow) -> Ident . Space Space Dash Star [ Newline Eof ]
+## state(nfa_arrow) -> Ident . At Space Dash Star [ Newline Eof ]
+## state(nfa_arrow) -> Ident . Space Space Dash nfa_arrow Arrow_head Space Ident list(state_extra(nfa_arrow)) [ Newline Eof ]
+## state(nfa_arrow) -> Ident . At Space Dash nfa_arrow Arrow_head Space Ident list(state_extra(nfa_arrow)) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+nfa: Star 
+##
+## Ends in an error in state: 19.
+##
+## nfa' -> . nfa [ # ]
+##
+## The known suffix of the stack is as follows:
+## 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+cfg: Ident Space Dash Arrow_head Space Ident Star 
+##
+## Ends in an error in state: 7.
+##
+## cfg_derivation -> Ident . Ident [ Newline Eof Bar ]
+##
+## The known suffix of the stack is as follows:
+## Ident 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+cfg: Ident Space Dash Arrow_head Space Letter Bar Star 
+##
+## Ends in an error in state: 11.
+##
+## separated_nonempty_list(Bar,cfg_derivation) -> cfg_derivation Bar . separated_nonempty_list(Bar,cfg_derivation) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## cfg_derivation Bar 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+cfg: Ident Space Dash Arrow_head Space Letter Newline Star 
+##
+## Ends in an error in state: 16.
+##
+## separated_nonempty_list(Newline,cfg_var) -> cfg_var Newline . separated_nonempty_list(Newline,cfg_var) [ Eof ]
+##
+## The known suffix of the stack is as follows:
+## cfg_var Newline 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+cfg: Ident Space Dash Arrow_head Space Letter Star 
+##
+## Ends in an error in state: 10.
+##
+## separated_nonempty_list(Bar,cfg_derivation) -> cfg_derivation . [ Newline Eof ]
+## separated_nonempty_list(Bar,cfg_derivation) -> cfg_derivation . Bar separated_nonempty_list(Bar,cfg_derivation) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## cfg_derivation 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+cfg: Ident Space Dash Arrow_head Space Star 
+##
+## Ends in an error in state: 5.
+##
+## cfg_var -> Ident Space Dash Arrow_head Space . separated_nonempty_list(Bar,cfg_derivation) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident Space Dash Arrow_head Space 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+cfg: Ident Space Dash Arrow_head Star 
+##
+## Ends in an error in state: 4.
+##
+## cfg_var -> Ident Space Dash Arrow_head . Space separated_nonempty_list(Bar,cfg_derivation) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident Space Dash Arrow_head 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+cfg: Ident Space Dash Star 
+##
+## Ends in an error in state: 3.
+##
+## cfg_var -> Ident Space Dash . Arrow_head Space separated_nonempty_list(Bar,cfg_derivation) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident Space Dash 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+cfg: Ident Space Star 
+##
+## Ends in an error in state: 2.
+##
+## cfg_var -> Ident Space . Dash Arrow_head Space separated_nonempty_list(Bar,cfg_derivation) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident Space 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+cfg: Ident Star 
+##
+## Ends in an error in state: 1.
+##
+## cfg_var -> Ident . Space Dash Arrow_head Space separated_nonempty_list(Bar,cfg_derivation) [ Newline Eof ]
+##
+## The known suffix of the stack is as follows:
+## Ident 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+
+cfg: Star 
+##
+## Ends in an error in state: 0.
+##
+## cfg' -> . cfg [ # ]
+##
+## The known suffix of the stack is as follows:
+## 
+##
+
+<YOUR SYNTAX ERROR MESSAGE HERE>
+

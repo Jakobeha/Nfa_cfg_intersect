@@ -1,0 +1,10 @@
+(jbuild_version 1)
+
+(executable
+  ((name main)
+   (libraries (core cmdliner lib))
+   (preprocess (pps (lwt_ppx)))))
+
+(install
+ ((section bin)
+  (files ((main.exe as Nfa_cfg_intersect)))))

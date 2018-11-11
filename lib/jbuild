@@ -1,0 +1,15 @@
+(jbuild_version 1)
+
+(library
+  ((name lib)
+   (public_name nfa_cfg_intersect)
+   (libraries (core))))
+
+(ocamllex (lexer))
+(menhir
+ ((modules (grammar))))
+(rule
+ ((targets (grammar_messages.ml))
+  (deps (grammar.mly grammar.messages))
+  (action (with-stdout-to grammar_messages.ml
+           (run menhir grammar.mly --compile-errors grammar.messages)))))

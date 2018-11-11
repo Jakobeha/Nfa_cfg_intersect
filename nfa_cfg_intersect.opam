@@ -1,0 +1,12 @@
+opam-version: "1.2"
+name: "nfa_cfg_intersect"
+version: "0.1"
+maintainer: "jakob <jakobeha@gmail.com>"
+authors: ["jakob <jakobeha@gmail.com>"]
+homepage: "https://github.com/jakobeha/nfa_cfg_intersect/src/master/README.md"
+bug-reports: "https://github.com/jakobeha/nfa_cfg_intersect/issues"
+license: "GPL-3"
+dev-repo: "https://github.com/jakobeha/nfa_cfg_intersect"
+build: [
+  ["build.sh" "build" "--only" "Nfa_cfg_intersect" "--root" "." "-j" jobs "@install"]
+]
