@@ -6,7 +6,7 @@ let assert_cfg_to_pda ~cfg ~pda =
     String.trim |>
     Lexing.from_string |>
     Lib.Parse.cfg |>
-    Lib.Cfg.to_pda |>
+    Lib.Convert.cfg_to_pda |>
     Lib.Pda.print in
   assert_equal_str ~exp: (String.trim pda) ~act: act_pda
 

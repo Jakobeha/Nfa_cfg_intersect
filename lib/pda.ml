@@ -1,4 +1,4 @@
-(** Nondeterministic Pushdown Automata.
+(** Nondeterministic Pushdown Automata with multiple pops/pushes per arrow.
     Implicitly starts with an empty stack, and only accepts
     when the stack is empty and at an accept state.
     Each arrow can only consume one letter or epsilon,
