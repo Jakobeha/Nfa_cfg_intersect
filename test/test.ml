@@ -3,7 +3,7 @@ open OUnit2
 let suite =
   test_list
     [ Parse_print_test.suite;
-      Cfg_to_pda_test.suite;
+      Convert_test.suite;
       (* Intersect_test.suite; *)
     ]
 
