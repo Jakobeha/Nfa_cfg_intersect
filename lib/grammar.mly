@@ -3,7 +3,7 @@
 open Core
 %}
 %token <Letter.t> Letter
-%token <Id.t> Ident
+%token <Id.t> Id
 %token Newline_3_space
 %token Space
 %token Newline
@@ -26,13 +26,13 @@ cfg:
   { Cfg.parse vars }
   ;
 cfg_var:
-  | id = Ident; Space; Dash; Arrow_head; Space; dvs = separated_nonempty_list(Bar, cfg_derivation)
+  | id = Id; Space; Dash; Arrow_head; Space; dvs = separated_nonempty_list(Bar, cfg_derivation)
   { (id, { Cfg.Var.derivations = dvs }) }
   ;
 cfg_derivation:
   | l = Letter
   { Cfg.Derivation.Terminal l }
-  | vs = nonempty_list(Ident)
+  | vs = list(Id)
   { Cfg.Derivation.NonTerminal vs }
   ;
 pda:
@@ -48,9 +48,9 @@ automaton(arrow):
   { sts }
   ;
 state(arrow):
-  | id = Ident; acp = accept; Space; Dash; Star
+  | id = Id; acp = accept; Space; Dash; Star
   { (id, acp, []) }
-  | id = Ident; acp = accept; Space; Dash; t1 = state_transition(arrow); ts = list(state_extra(arrow))
+  | id = Id; acp = accept; Space; Dash; t1 = state_transition(arrow); ts = list(state_extra(arrow))
   { (id, acp, t1 :: ts) }
   ;
 %inline accept:
@@ -64,7 +64,7 @@ state_extra(arrow):
   { t }
   ;
 %inline state_transition(arrow):
-  | arr = arrow; Arrow_head; Space; dst = Ident
+  | arr = arrow; Arrow_head; Space; dst = Id
   { (dst, arr) }
 pda_arrow:
   | Open_brace; csm = Letter; Comma; pops = nonempty_list(free_letter); Dash; Arrow_head; pshs = nonempty_list(free_letter); Close_brace; Dash
@@ -72,7 +72,7 @@ pda_arrow:
 %inline free_letter:
   | a = Letter
   { a }
-  | a = Ident
+  | a = Id
   { Id.to_letter a }
 nfa_arrow:
   | csm = Letter; Dash

@@ -84,9 +84,15 @@ end) = struct
 
   let add_transition atm (src, arr, dst) =
     let st = Array.get !atm.states src in
-    let ts = Array.get st.transitions dst in
-    let ts = { Transition.arrows = arr :: ts.arrows; } in
-    Array.set st.transitions dst ts
+    let tr = Array.get st.transitions dst in
+    let tr = { Transition.arrows = arr :: tr.arrows; } in
+    Array.set st.transitions dst tr
+
+  let clear_transition atm src dst =
+    let st = Array.get !atm.states src in
+    let trs = st.transitions in
+    Array.set trs dst Transition.empty
+
 
   let copy atm = ref
     { states = Array.map ~f: State.copy atm.states;

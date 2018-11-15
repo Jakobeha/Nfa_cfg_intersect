@@ -5,14 +5,12 @@ open Lexing
 open Grammar
 
 exception SyntaxError of string
-
-let lexeme_char lexbuf =
-  Char.of_string (Lexing.lexeme lexbuf)
 }
 
 rule read = parse
-  | ['a'-'z' '0'] { Letter (lexeme_char lexbuf) }
-  | ['A'-'Z'] { Ident (Id.lex (lexeme_char lexbuf)) }
+  | '_' { Letter Letter.epsilon }
+  | ['a'-'z'] (['1'-'9'] ['0'-'9']+)? { Letter (Letter.lex (Lexing.lexeme lexbuf)) }
+  | ['A'-'Z'] (['1'-'9'] ['0'-'9']+)? { Id (Id.lex (Lexing.lexeme lexbuf)) }
   | "\n   " { Newline_3_space }
   | ' ' { Space }
   | '\n' { Newline }

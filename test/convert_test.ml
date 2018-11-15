@@ -20,7 +20,6 @@ let assert_cfg_to_pda ~cfg ~pda =
   assert_equal_str ~exp: (String.trim pda) ~act: act_pda
 
 let assert_pda_to_cfg ~pda ~cfg =
-  todo "first pda to spda";
   let act_cfg = pda |>
     String.trim |>
     Lexing.from_string |>
@@ -31,13 +30,13 @@ let assert_pda_to_cfg ~pda ~cfg =
 
 let test_pda_to_spda _ =
   assert_pda_to_spda ~pda: {|
-S  -[0,0->S]-> A
-A@ -[a,S->0]-> A
-   +[b,S->0]-> A
-   +[0,S->ASA]-> A
-   +[0,S->BSB]-> A
-   +[a,A->0]-> A
-   +[b,B->0]-> A
+S  -[_,_->S]-> A
+A@ -[a,S->_]-> A
+   +[b,S->_]-> A
+   +[_,S->ASA]-> A
+   +[_,S->BSB]-> A
+   +[a,A->_]-> A
+   +[b,B->_]-> A
 |} ~spda: {|
 S  -[+S]-> A
 A@ -[a]-> B
@@ -65,32 +64,32 @@ S -> a|b|ASA|BSB
 A -> a
 B -> b
 |} ~pda: {|
-S  -[0,0->S]-> A
-A@ -[a,S->0]-> A
-   +[b,S->0]-> A
-   +[0,S->ASA]-> A
-   +[0,S->BSB]-> A
-   +[a,A->0]-> A
-   +[b,B->0]-> A
+S  -[_,_->S]-> A
+A@ -[a,S->_]-> A
+   +[b,S->_]-> A
+   +[_,S->ASA]-> A
+   +[_,S->BSB]-> A
+   +[a,A->_]-> A
+   +[b,B->_]-> A
 |}
 
 let test_pda_to_cfg _ =
   assert_pda_to_cfg ~pda: {|
-S  -[0,0->S]-> A
-A@ -[a,S->0]-> A
-   +[b,S->0]-> A
-   +[0,S->ASA]-> A
-   +[0,S->BSB]-> A
-   +[a,A->0]-> A
-   +[b,B->0]-> A
+S  -[_,_->S]-> A
+A@ -[a,S->_]-> A
+   +[b,S->_]-> A
+   +[_,S->ASA]-> A
+   +[_,S->BSB]-> A
+   +[a,A->_]-> A
+   +[b,B->_]-> A
 |} ~cfg: {|
 S  -[+S]-> A
 A@ -[a]-> B
    +[b]-> C
    +[-S]-> D
    +[-S]-> G
-   +[0,S->ASA]-> A
-   +[0,S->BSB]-> A
+   +[_,S->ASA]-> A
+   +[_,S->BSB]-> A
    +[a]-> J
    +[b]-> K
 B  -[-S]-> A

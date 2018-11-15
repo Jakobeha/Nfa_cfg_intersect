@@ -26,18 +26,23 @@ module Var = struct
     { derivations = [];
     }
 
-  let offset off var =
+  let subst var (old_id, new_id) =
     { derivations =
         List.map var.derivations ~f: (fun dv ->
           match dv with
           | Derivation.Terminal _ -> dv
           | Derivation.NonTerminal ids ->
-            Derivation.NonTerminal (List.map ids ~f: (fun id -> id + off))
+            Derivation.NonTerminal (List.map ids ~f: (fun id ->
+              if id = old_id then
+                new_id
+              else
+                id
+            ))
         );
     }
 
-  let print idx var =
-    Id.print idx ^
+  let print id var =
+    Id.print id ^
     " -> " ^
     String.concat ~sep: "|" (
       List.map ~f: Derivation.print var.derivations
@@ -47,39 +52,6 @@ end
 type t =
   { variables : Var.t Array.t;
   }
-
-let new_empty () = ref
-  { variables = [||];
-  }
-
-let get_var cfg var =
-  cfg.variables |>
-  Array.findi ~f: (fun _ var2 -> var = var2) |>
-  Option.map ~f: (fun (id, _) -> id)
-
-let add_var cfg var =
-  let id = Array.length !cfg.variables in
-  cfg := { variables = Array.append !cfg.variables [|var|]; };
-  id
-
-let have_var cfg var =
-  match get_var !cfg var with
-  | None -> add_var cfg var
-  | Some id -> id
-
-let add_vars cfg vars =
-  cfg := { variables = Array.append !cfg.variables vars; }
-
-let add_child_var par ch =
-  let off = Array.length !par.variables in
-  let vars = Array.map ch.variables ~f: (Var.offset off) in
-  add_vars par vars;
-  off
-
-let add_derivation cfg id dv =
-  let var = Array.get !cfg.variables id in
-  let var = { Var.derivations = dv :: var.derivations; } in
-  Array.set !cfg.variables id var
 
 let parse vars =
   assert (not (List.is_empty vars));

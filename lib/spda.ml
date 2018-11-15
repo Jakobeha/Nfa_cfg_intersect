@@ -15,10 +15,10 @@ module Arrow = struct
   let print arr =
     let internal =
       match arr with
-      | Epsilon -> Letter.to_string Letter.epsilon
-      | Consume l -> Letter.to_string l
-      | Push l -> "+" ^ Letter.to_string l
-      | Pop l -> "-" ^ Letter.to_string l in
+      | Epsilon -> Letter.print Letter.epsilon
+      | Consume l -> Letter.print l
+      | Push l -> "+" ^ Letter.print l
+      | Pop l -> "-" ^ Letter.print l in
     "[" ^ internal ^ "]"
 end
 

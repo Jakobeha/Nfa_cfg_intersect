@@ -6,7 +6,7 @@ let assert_parse_print f_parse f_print inp =
 
 let test_cfg _ =
   assert_parse_print Lib.Parse.cfg Lib.Cfg.print {|
-S -> AB|BC|DE|0
+S -> AB|BC|DE|_
 A -> AB|a
 B -> BC|DE
 C -> c
@@ -16,11 +16,11 @@ E -> f
 
 let test_pda _ =
   assert_parse_print Lib.Parse.pda Lib.Pda.print {|
-S  -[a,0->a]-> S
-   +[c,0->0]-> A
-   +[d,0->a]-> A
-A  -[b,a->0]-> A
-   +[0,0->0]-> B
+S  -[a,_->a]-> S
+   +[c,_->_]-> A
+   +[d,_->a]-> A
+A  -[b,a->_]-> A
+   +[_,_->_]-> B
 B@ -*
 |}
 

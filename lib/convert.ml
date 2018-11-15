@@ -71,12 +71,12 @@ let cfg_to_pda cfg =
         match dv with
         | Cfg.Derivation.Terminal l ->
           { Pda.Arrow.consume = l;
-            pops = Letter.to_string (Id.to_letter idx);
+            pops = Word.of_letter (Id.to_letter idx);
             pushes = "";
           }
         | NonTerminal vs ->
           { Pda.Arrow.consume = Letter.epsilon;
-            pops = Letter.to_string (Id.to_letter idx);
+            pops = Word.of_letter (Id.to_letter idx);
             pushes =
               vs |>
               List.rev_map ~f: Id.to_letter |>
@@ -88,54 +88,86 @@ let cfg_to_pda cfg =
   (* Generate a state for every variable *)
   !pda
 
-let rec spda_to_cfg spda =
-  let cfg = Cfg.new_empty () in
-  (* Follow the automata's transitions, keeping track of the automata's
-     state q1, CFG's current variable A, and a "held" variable z. Start
-     with q1 = the start state, A = S, and z = 0 (epsilon). When the
-     automata transitions to q2, consuming a (can be epsilon), pushing x
-     (can be epsilon), and *popping z* - if x is epsilon, add the
-     derivation A -> aB, where B is the CFG for the same PDA, but
-     starting at q2 (also has the same accept states) | if x isn't
-     epsilon, for every state (including q1) q3, add the derivation
-     A -> aBC, where B is the CFG for the same PDA, but starting at q2
-     and accepting only q3, and also recurse adding derivations with
-     q1 = q3, A = C, and z = x. *)
-  let rec loop q1 v1 z1 =
-    let st1 = Array.get spda.Spda.states q1 in
-    Array.iteri st1.transitions ~f: (fun q2 tr ->
-      let spda2 = Spda.copy spda in
-      Spda.swap_ids spda2 0 q2;
-      if z1 = Letter.epsilon then
-        List.iter tr.arrows ~f: (fun arr ->
-          match arr with
-          | Spda.Arrow.Epsilon ->
-            let cfg2 = spda_to_cfg !spda2 in
-            let v2 = Cfg.add_child_var cfg cfg2 in
-            Cfg.add_derivation cfg v1 (Cfg.Derivation.NonTerminal [v2])
-          | Consume csm ->
-            let v2 = Cfg.have_var cfg { Cfg.Var.derivations = [Terminal csm]; }
-            and cfg2 = spda_to_cfg !spda2 in
-            let v3 = Cfg.add_child_var cfg cfg2 in
-            Cfg.add_derivation cfg v1 (Cfg.Derivation.NonTerminal [v2; v3])
-          | Push psh ->
-            Array.iteri spda.states ~f: (fun q3 _ ->
-              Spda.set_accept_only spda2 q3;
-              let cfg2 = spda_to_cfg !spda2 in
-              let v2 = Cfg.add_child_var cfg cfg2
-              and v3 = Cfg.add_var cfg Cfg.Var.empty in
-              loop q3 v3 psh;
-              Cfg.add_derivation cfg v1 (Cfg.Derivation.NonTerminal [v2; v3])
-            );
-          | Pop _ -> ()
-        )
-      else if List.exists tr.arrows ~f: (fun arr -> arr = Spda.Arrow.Pop z1) then
-        let cfg2 = spda_to_cfg !spda2 in
-        let v2 = Cfg.add_child_var cfg cfg2 in
-        Cfg.add_derivation cfg v1 (Cfg.Derivation.NonTerminal [v2])
-    ) in
-  loop 0 0 Letter.epsilon;
-  !cfg
+let spda_to_cfg spda =
+  (* For each pair of states p and q, create a variable Apq, to get from
+     p to q on any stack without changing it. This can be done either
+     "direct" (consume a letter or epsilon), "hill" (push a letter,
+     consume another variable, and pop the same letter), or "transitive"
+     (consume Apr and Arq). Then, the start variable derives to all A0q
+     where q is an accept state (gets from start to accept on an empty
+     stack). *)
+  let num_sts = Array.length spda.Spda.states in
+  let get_vid q1 q2 =
+    (q1 * num_sts) + q2 + 1 in
+  { Cfg.variables =
+      Array.init ((num_sts * num_sts) + 1) ~f: (fun vid ->
+        if vid = 0 then
+          (* start state - derives to A0i where i is accept *)
+          { Cfg.Var.derivations =
+              spda.states |>
+              Array.to_list |>
+              List.mapi ~f: (fun q st -> (q, st)) |>
+              List.filter ~f: (fun (_, st) -> st.Spda.State.is_accept) |>
+              List.map ~f: (fun (q, _) -> Cfg.Derivation.NonTerminal [get_vid 0 q]);
+          }
+        else
+          let q12 = vid - 1 in
+          let q1 = q12 / num_sts
+          and q2 = q12 mod num_sts in
+          let st1 = Array.get spda.states q1 in
+          let tr12 = Array.get st1.transitions q2 in
+          { Cfg.Var.derivations =
+              (* direct - consume a letter or epsilon *)
+              List.filter_map tr12.arrows ~f: (fun arr12 ->
+                match arr12 with
+                | Spda.Arrow.Push _
+                | Pop _ -> None
+                | Epsilon -> Some (Cfg.Derivation.Terminal Letter.epsilon)
+                | Consume l -> Some (Terminal l)
+              ) @
+              (* hill - push a letter, consume a variable, then pop *)
+              List.filter_opt (List.init (num_sts * num_sts) (fun qi1i2 ->
+                let qi1 = qi1i2 / num_sts
+                and qi2 = qi1i2 mod num_sts in
+                let sti2 = Array.get spda.states qi2 in
+                let tr1i1 = Array.get st1.transitions qi1
+                and tri22 = Array.get sti2.transitions q2 in
+                let pushes =
+                  List.filter_map tr1i1.arrows ~f: (fun arr1i1 ->
+                    match arr1i1 with
+                    | Spda.Arrow.Epsilon
+                    | Consume _
+                    | Pop _ -> None
+                    | Push l -> Some l
+                  )
+                and pops =
+                  List.filter_map tri22.arrows ~f: (fun arri22 ->
+                    match arri22 with
+                    | Spda.Arrow.Epsilon
+                    | Consume _
+                    | Push _ -> None
+                    | Pop l -> Some l
+                  ) in
+                if List.exists pushes ~f: (fun push ->
+                  List.exists pops ~f: (fun pop ->
+                    push = pop
+                  )
+                ) then
+                  Some (Cfg.Derivation.NonTerminal [get_vid qi1 qi2])
+                else
+                  None
+              )) @
+              (* transitive - forall r, consume Apr and Arq *)
+              ( if q1 = q2 then
+                  []
+                else
+                  List.init num_sts (fun q3 ->
+                    Cfg.Derivation.NonTerminal [get_vid q1 q3; get_vid q3 q2]
+                  )
+              );
+          }
+      )
+  }
 
 let pda_to_cfg pda =
   spda_to_cfg (pda_to_spda pda)
