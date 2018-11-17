@@ -168,6 +168,3 @@ let spda_to_cfg spda =
           }
       )
   }
-
-let pda_to_cfg pda =
-  spda_to_cfg (pda_to_spda pda)

@@ -24,7 +24,8 @@ let assert_pda_to_cfg ~pda ~cfg =
     String.trim |>
     Lexing.from_string |>
     Lib.Parse.pda |>
-    Lib.Convert.pda_to_cfg |>
+    Lib.Convert.pda_to_spda |>
+    Lib.Convert.spda_to_cfg |>
     Lib.Cfg.print in
   assert_equal_str ~exp: (String.trim cfg) ~act: act_cfg
 

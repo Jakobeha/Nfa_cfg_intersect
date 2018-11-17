@@ -12,5 +12,8 @@ let cfg inp =
 let pda inp =
   Grammar.pda Lexer.read inp
 
+let spda inp =
+  Grammar.spda Lexer.read inp
+
 let nfa inp =
   Grammar.nfa Lexer.read inp

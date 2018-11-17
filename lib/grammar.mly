@@ -19,6 +19,7 @@ open Core
 %token Eof
 %start <Cfg.t> cfg
 %start <Pda.t> pda
+%start <Spda.t> spda
 %start <Nfa.t> nfa
 %%
 cfg:
@@ -38,6 +39,10 @@ cfg_derivation:
 pda:
   | sts = automaton(pda_arrow); Eof
   { Pda.parse sts }
+  ;
+spda:
+  | sts = automaton(spda_arrow); Eof
+  { Spda.parse sts }
   ;
 nfa:
   | sts = automaton(nfa_arrow); Eof
@@ -69,6 +74,16 @@ state_extra(arrow):
 pda_arrow:
   | Open_brace; csm = Letter; Comma; pops = nonempty_list(free_letter); Dash; Arrow_head; pshs = nonempty_list(free_letter); Close_brace; Dash
   { { Pda.Arrow.consume = csm; pops = Word.of_letters pops; pushes = Word.of_letters pshs; } }
+spda_arrow:
+  | Open_brace; x = spda_arrow_content; Close_brace; Dash
+  { x }
+%inline spda_arrow_content:
+  | csm = free_letter
+  { if csm = Letter.epsilon then Spda.Arrow.Epsilon else Consume csm }
+  | Plus; psh = free_letter
+  { Spda.Arrow.Push psh }
+  | Dash; pop = free_letter
+  { Spda.Arrow.Pop pop }
 %inline free_letter:
   | a = Letter
   { a }

@@ -4,7 +4,7 @@ let suite =
   test_list
     [ Parse_print_test.suite;
       Convert_test.suite;
-      (* Intersect_test.suite; *)
+      Operate_test.suite;
     ]
 
 let _ =
