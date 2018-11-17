@@ -92,10 +92,10 @@ let spda_to_cfg spda =
   (* For each pair of states p and q, create a variable Apq, to get from
      p to q on any stack without changing it. This can be done either
      "direct" (consume a letter or epsilon), "hill" (push a letter,
-     consume another variable, and pop the same letter), or "transitive"
-     (consume Apr and Arq). Then, the start variable derives to all A0q
-     where q is an accept state (gets from start to accept on an empty
-     stack). *)
+     consume another variable, and pop the same letter), "transitive"
+     (consume Apr and Arq), or "reflexive" (if p = q, consume epsilon).
+     Then, the start variable derives to all A0q, where q is an accept
+     state (gets from start to accept on an empty stack). *)
   let num_sts = Array.length spda.Spda.states in
   let get_vid q1 q2 =
     (q1 * num_sts) + q2 + 1 in
@@ -157,9 +157,10 @@ let spda_to_cfg spda =
                 else
                   None
               )) @
-              (* transitive - forall r, consume Apr and Arq *)
+              (* transitive - forall r, consume Apr and Arq
+                 reflexive - if p = q, consume epsilon *)
               ( if q1 = q2 then
-                  []
+                  [Cfg.Derivation.Terminal Letter.epsilon]
                 else
                   List.init num_sts (fun q3 ->
                     Cfg.Derivation.NonTerminal [get_vid q1 q3; get_vid q3 q2]

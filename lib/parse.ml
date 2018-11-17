@@ -4,16 +4,17 @@ open Lexing
 open Lexer
 open Grammar
 
-exception Error of Error.t
+let cfg_and_nfa inp =
+  Grammar.cfg_and_nfa_eof Lexer.read inp
 
 let cfg inp =
-  Grammar.cfg Lexer.read inp
+  Grammar.cfg_eof Lexer.read inp
 
 let pda inp =
-  Grammar.pda Lexer.read inp
+  Grammar.pda_eof Lexer.read inp
 
 let spda inp =
-  Grammar.spda Lexer.read inp
+  Grammar.spda_eof Lexer.read inp
 
 let nfa inp =
-  Grammar.nfa Lexer.read inp
+  Grammar.nfa_eof Lexer.read inp

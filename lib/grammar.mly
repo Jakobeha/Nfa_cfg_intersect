@@ -4,6 +4,7 @@ open Core
 %}
 %token <Letter.t> Letter
 %token <Id.t> Id
+%token Separator
 %token Newline_3_space
 %token Space
 %token Newline
@@ -17,13 +18,38 @@ open Core
 %token Close_brace
 %token Comma
 %token Eof
-%start <Cfg.t> cfg
-%start <Pda.t> pda
-%start <Spda.t> spda
-%start <Nfa.t> nfa
+%start <Cfg.t * Nfa.t> cfg_and_nfa_eof
+%start <Cfg.t> cfg_eof
+%start <Pda.t> pda_eof
+%start <Spda.t> spda_eof
+%start <Nfa.t> nfa_eof
 %%
+cfg_and_nfa_eof:
+  | a = eof(cfg_and_nfa)
+  { a }
+cfg_eof:
+  | a = eof(cfg)
+  { a }
+pda_eof:
+  | a = eof(pda)
+  { a }
+spda_eof:
+  | a = eof(spda)
+  { a }
+nfa_eof:
+  | a = eof(nfa)
+  { a }
+eof(A):
+  | a = A; Eof
+  { a }
+cfg_and_nfa:
+  | a = tuple2(cfg, nfa)
+  { a }
+tuple2(A, B):
+  | a = A; Separator; b = B
+  { (a, b) }
 cfg:
-  | vars = separated_nonempty_list(Newline, cfg_var); Eof
+  | vars = separated_nonempty_list(Newline, cfg_var)
   { Cfg.parse vars }
   ;
 cfg_var:
@@ -37,15 +63,15 @@ cfg_derivation:
   { Cfg.Derivation.NonTerminal vs }
   ;
 pda:
-  | sts = automaton(pda_arrow); Eof
+  | sts = automaton(pda_arrow)
   { Pda.parse sts }
   ;
 spda:
-  | sts = automaton(spda_arrow); Eof
+  | sts = automaton(spda_arrow)
   { Spda.parse sts }
   ;
 nfa:
-  | sts = automaton(nfa_arrow); Eof
+  | sts = automaton(nfa_arrow)
   { Nfa.parse sts }
   ;
 automaton(arrow):

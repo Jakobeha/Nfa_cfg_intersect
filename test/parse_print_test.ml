@@ -24,6 +24,16 @@ A  -[b,a->_]-> A
 B@ -*
 |}
 
+let test_spda _ =
+  assert_parse_print Lib.Parse.spda Lib.Spda.print {|
+S  -[-a]-> S
+   +[+c]-> A
+   +[d]-> A
+A  -[_]-> A
+   +[-B]-> B
+B@ -*
+|}
+
 let test_nfa _ =
   assert_parse_print Lib.Parse.nfa Lib.Nfa.print {|
 S  -a-> S
@@ -34,5 +44,6 @@ let suite =
   "parse_print" >:::
   [ "cfg" >:: test_cfg;
     "pda" >:: test_pda;
+    "spda" >:: test_spda;
     "nfa" >:: test_nfa;
   ]

@@ -41,6 +41,9 @@ lib: [
   "_build/install/default/lib/nfa_cfg_intersect/lib__Nfa.cmi" {"lib__Nfa.cmi"}
   "_build/install/default/lib/nfa_cfg_intersect/lib__Nfa.cmt" {"lib__Nfa.cmt"}
   "_build/install/default/lib/nfa_cfg_intersect/lib__Nfa.cmx" {"lib__Nfa.cmx"}
+  "_build/install/default/lib/nfa_cfg_intersect/lib__Operate.cmi" {"lib__Operate.cmi"}
+  "_build/install/default/lib/nfa_cfg_intersect/lib__Operate.cmt" {"lib__Operate.cmt"}
+  "_build/install/default/lib/nfa_cfg_intersect/lib__Operate.cmx" {"lib__Operate.cmx"}
   "_build/install/default/lib/nfa_cfg_intersect/lib__Parse.cmi" {"lib__Parse.cmi"}
   "_build/install/default/lib/nfa_cfg_intersect/lib__Parse.cmt" {"lib__Parse.cmt"}
   "_build/install/default/lib/nfa_cfg_intersect/lib__Parse.cmx" {"lib__Parse.cmx"}
@@ -59,6 +62,7 @@ lib: [
   "_build/install/default/lib/nfa_cfg_intersect/nfa.ml" {"nfa.ml"}
   "_build/install/default/lib/nfa_cfg_intersect/nfa_cfg_intersect.dune" {"nfa_cfg_intersect.dune"}
   "_build/install/default/lib/nfa_cfg_intersect/opam" {"opam"}
+  "_build/install/default/lib/nfa_cfg_intersect/operate.ml" {"operate.ml"}
   "_build/install/default/lib/nfa_cfg_intersect/parse.ml" {"parse.ml"}
   "_build/install/default/lib/nfa_cfg_intersect/pda.ml" {"pda.ml"}
   "_build/install/default/lib/nfa_cfg_intersect/spda.ml" {"spda.ml"}
