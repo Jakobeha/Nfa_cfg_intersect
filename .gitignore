@@ -3,4 +3,4 @@
 .git
 .merlin
 _build
-descript-lang.install
+nfa_cfg_intersect.install
