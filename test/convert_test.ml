@@ -106,7 +106,7 @@ K  -[-B]-> A
 |}
 
 let suite =
-  "parse_print" >:::
+  "convert" >:::
   [ "pda_to_spda" >:: test_pda_to_spda;
     "cfg_to_pda" >:: test_cfg_to_pda;
     "pda_to_cfg" >:: test_pda_to_cfg;

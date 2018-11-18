@@ -1,7 +1,34 @@
 open Core
 
-module Make (Arrow : sig
+module Checkpoint = struct
+  type 'mem t =
+    | Reject
+    | Continue of 'mem * int
+end
+
+module Result = struct
+  type t =
+    | Accept
+    | Reject of Int.t
+
+  let compare a b =
+    match (a, b) with
+    | (Accept, Accept) -> 0
+    | (Accept, Reject _) -> -1
+    | (Reject _, Accept) -> 1
+    | (Reject ai, Reject bi) -> bi - ai
+end
+
+module Make (Memory : sig
   type t
+
+  val init : t
+
+  val can_accept : t -> Bool.t
+end)(Arrow : sig
+  type t
+
+  val follow : Memory.t -> Letter.t -> t -> Memory.t Checkpoint.t
 
   val print : t -> string
 end) = struct
@@ -55,6 +82,22 @@ end) = struct
             List.concat_mapi ~f: Transition.print_lines
           )
       )
+  end
+
+  module Frame = struct
+    type t =
+      { state_idx : Id.t;
+        word_idx : Int.t;
+        memory : Memory.t;
+        visited : Id.Set.t;
+      }
+
+    let init =
+      { state_idx = 0;
+        word_idx = 0;
+        memory = Memory.init;
+        visited = Id.Set.empty;
+      }
   end
 
   type t =
@@ -111,12 +154,54 @@ end) = struct
       { st2 with State.is_accept = id = id2; }
     )
 
+  let run atm w =
+    let rec next fr =
+      let st = Array.get atm.states fr.Frame.state_idx
+      and at_end = fr.word_idx = String.length w in
+      if at_end && Memory.can_accept fr.memory && st.is_accept then
+        Result.Accept
+      else
+        let rej = Result.Reject fr.word_idx
+        and l =
+          if at_end then
+            Letter.epsilon
+          else
+            Word.get w fr.word_idx in
+        Array.mapi st.transitions ~f: (fun ist2 tr ->
+          if Id.Set.mem fr.visited ist2 then
+            rej
+          else
+            List.map tr.arrows ~f: (fun arr ->
+              match Arrow.follow fr.memory l arr with
+              | Reject -> rej
+              | Continue (mem2, adv) ->
+                let iw2 = fr.word_idx + adv
+                and vst2 =
+                  if adv > 0 || mem2 <> fr.memory then
+                    Id.Set.empty
+                  else
+                    Id.Set.add fr.visited fr.state_idx in
+                assert (iw2 <= String.length w);
+                next
+                  { state_idx = ist2;
+                    word_idx = iw2;
+                    memory = mem2;
+                    visited = vst2;
+                  }
+            ) |>
+            List.min_elt ~compare: Result.compare |>
+            Option.value ~default: rej
+        ) |>
+        Array.min_elt ~compare: Result.compare |>
+        Option.value ~default: rej in
+    next Frame.init
+
   let parse sts =
     assert (not (List.is_empty sts));
     let num_sts = List.length sts in
     { states = sts |>
         List.map ~f: (fun (id, acp, trs) -> (id, State.parse num_sts acp trs)) |>
-        Util.validate_id_order |>
+        Util.Id.validate_order |>
         Array.of_list;
     }
 

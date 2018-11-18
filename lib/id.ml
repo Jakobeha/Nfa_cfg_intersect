@@ -1,5 +1,8 @@
 open Core
-include Int
+
+type t = Int.t
+
+module Set = Int.Set
 
 let alphabet =
   "SABCDEFGHIJKLMNOPQRTUVWXYZ"

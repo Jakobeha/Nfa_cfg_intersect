@@ -99,73 +99,76 @@ let spda_to_cfg spda =
   let num_sts = Array.length spda.Spda.states in
   let get_vid q1 q2 =
     (q1 * num_sts) + q2 + 1 in
-  { Cfg.variables =
-      Array.init ((num_sts * num_sts) + 1) ~f: (fun vid ->
-        if vid = 0 then
-          (* start state - derives to A0i where i is accept *)
-          { Cfg.Var.derivations =
-              spda.states |>
-              Array.to_list |>
-              List.mapi ~f: (fun q st -> (q, st)) |>
-              List.filter ~f: (fun (_, st) -> st.Spda.State.is_accept) |>
-              List.map ~f: (fun (q, _) -> Cfg.Derivation.NonTerminal [get_vid 0 q]);
-          }
-        else
-          let q12 = vid - 1 in
-          let q1 = q12 / num_sts
-          and q2 = q12 mod num_sts in
-          let st1 = Array.get spda.states q1 in
-          let tr12 = Array.get st1.transitions q2 in
-          { Cfg.Var.derivations =
-              (* direct - consume a letter or epsilon *)
-              List.filter_map tr12.arrows ~f: (fun arr12 ->
-                match arr12 with
-                | Spda.Arrow.Push _
-                | Pop _ -> None
-                | Epsilon -> Some (Cfg.Derivation.Terminal Letter.epsilon)
-                | Consume l -> Some (Terminal l)
-              ) @
-              (* hill - push a letter, consume a variable, then pop *)
-              List.filter_opt (List.init (num_sts * num_sts) (fun qi1i2 ->
-                let qi1 = qi1i2 / num_sts
-                and qi2 = qi1i2 mod num_sts in
-                let sti2 = Array.get spda.states qi2 in
-                let tr1i1 = Array.get st1.transitions qi1
-                and tri22 = Array.get sti2.transitions q2 in
-                let pushes =
-                  List.filter_map tr1i1.arrows ~f: (fun arr1i1 ->
-                    match arr1i1 with
-                    | Spda.Arrow.Epsilon
-                    | Consume _
-                    | Pop _ -> None
-                    | Push l -> Some l
-                  )
-                and pops =
-                  List.filter_map tri22.arrows ~f: (fun arri22 ->
-                    match arri22 with
-                    | Spda.Arrow.Epsilon
-                    | Consume _
-                    | Push _ -> None
-                    | Pop l -> Some l
-                  ) in
-                if List.exists pushes ~f: (fun push ->
-                  List.exists pops ~f: (fun pop ->
-                    push = pop
-                  )
-                ) then
-                  Some (Cfg.Derivation.NonTerminal [get_vid qi1 qi2])
-                else
-                  None
-              )) @
-              (* transitive - forall r, consume Apr and Arq
-                 reflexive - if p = q, consume epsilon *)
-              ( if q1 = q2 then
-                  [Cfg.Derivation.Terminal Letter.epsilon]
-                else
-                  List.init num_sts (fun q3 ->
-                    Cfg.Derivation.NonTerminal [get_vid q1 q3; get_vid q3 q2]
-                  )
-              );
-          }
-      )
-  }
+  let cfg = ref
+    { Cfg.variables =
+        Array.init ((num_sts * num_sts) + 1) ~f: (fun vid ->
+          if vid = 0 then
+            (* start state - derives to A0i where i is accept *)
+            { Cfg.Var.derivations =
+                spda.states |>
+                Array.to_list |>
+                List.mapi ~f: (fun q st -> (q, st)) |>
+                List.filter ~f: (fun (_, st) -> st.Spda.State.is_accept) |>
+                List.map ~f: (fun (q, _) -> Cfg.Derivation.NonTerminal [get_vid 0 q]);
+            }
+          else
+            let q12 = vid - 1 in
+            let q1 = q12 / num_sts
+            and q2 = q12 mod num_sts in
+            let st1 = Array.get spda.states q1 in
+            let tr12 = Array.get st1.transitions q2 in
+            { Cfg.Var.derivations =
+                (* direct - consume a letter or epsilon *)
+                List.filter_map tr12.arrows ~f: (fun arr12 ->
+                  match arr12 with
+                  | Spda.Arrow.Push _
+                  | Pop _ -> None
+                  | Epsilon -> Some (Cfg.Derivation.Terminal Letter.epsilon)
+                  | Consume l -> Some (Terminal l)
+                ) @
+                (* hill - push a letter, consume a variable, then pop *)
+                List.filter_opt (List.init (num_sts * num_sts) (fun qi1i2 ->
+                  let qi1 = qi1i2 / num_sts
+                  and qi2 = qi1i2 mod num_sts in
+                  let sti2 = Array.get spda.states qi2 in
+                  let tr1i1 = Array.get st1.transitions qi1
+                  and tri22 = Array.get sti2.transitions q2 in
+                  let pushes =
+                    List.filter_map tr1i1.arrows ~f: (fun arr1i1 ->
+                      match arr1i1 with
+                      | Spda.Arrow.Epsilon
+                      | Consume _
+                      | Pop _ -> None
+                      | Push l -> Some l
+                    )
+                  and pops =
+                    List.filter_map tri22.arrows ~f: (fun arri22 ->
+                      match arri22 with
+                      | Spda.Arrow.Epsilon
+                      | Consume _
+                      | Push _ -> None
+                      | Pop l -> Some l
+                    ) in
+                  if List.exists pushes ~f: (fun push ->
+                    List.exists pops ~f: (fun pop ->
+                      push = pop
+                    )
+                  ) then
+                    Some (Cfg.Derivation.NonTerminal [get_vid qi1 qi2])
+                  else
+                    None
+                )) @
+                (* transitive - forall r, consume Apr and Arq
+                  reflexive - if p = q, consume epsilon *)
+                ( if q1 = q2 then
+                    [Cfg.Derivation.Terminal Letter.epsilon]
+                  else
+                    List.init num_sts (fun q3 ->
+                      Cfg.Derivation.NonTerminal [get_vid q1 q3; get_vid q3 q2]
+                    )
+                );
+            }
+        )
+    } in
+  Cfg.optimize cfg;
+  !cfg

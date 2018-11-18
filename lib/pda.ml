@@ -7,12 +7,45 @@
 
 open Core
 
+module Memory = struct
+  type t = Letter.t List.t
+
+  let init = []
+
+  let can_accept stk = List.is_empty stk
+end
+
 module Arrow = struct
   type t =
     { consume : Letter.t;
       pops : Word.t;
       pushes : Word.t;
     }
+
+  let follow stk l arr =
+    let eps = arr.consume = Letter.epsilon in
+    if not eps && arr.consume <> l then
+      Automaton.Checkpoint.Reject
+    else
+      arr.pops |>
+      Word.to_letters |>
+      List.fold_until  ~init: stk ~f: (fun stk pop ->
+        match stk with
+        | [] -> Stop Automaton.Checkpoint.Reject
+        | fst :: rst ->
+          if fst <> pop then
+            Stop Reject
+          else
+            Continue rst
+      ) ~finish: (fun stk ->
+        let pshs =
+          arr.pushes |>
+          Word.to_letters |>
+          List.rev in
+        let stk2 = pshs @ stk
+        and adv = if eps then 0 else 1 in
+        Continue (stk2, adv)
+      )
 
   let print arr =
     "[" ^
@@ -24,4 +57,4 @@ module Arrow = struct
     "]"
 end
 
-include Automaton.Make(Arrow)
+include Automaton.Make(Memory)(Arrow)
