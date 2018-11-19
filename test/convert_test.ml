@@ -141,29 +141,40 @@ A -> _|b
 S  -[_,_->S]-> A
 A@ -[a,S->_]-> A
    +[_,S->SS]-> A
-|} ?cfg_orig: None ~cfg_optim: {|
-S -> a|AI|BM|CR|DA|FN|GT|LS|LA|ME|NI|OS|OT|PR|PT|QA|RE|UN
-A -> SE|BN|CT|LA|ME|OA|PT
-B -> _|SF|SG|AJ|AK|BO|BP|CU|LC|MG|NK|OC
-C -> SG|AK|BP|LC|MG|NK|OC
-D -> EH|FL|GQ
-E -> a|DA|FN|GT
-F -> DB|DC|EH|EJ|EK|FL|FO|FP|GQ|GU
-G -> DC|EK|FP
-H -> ID|JL|KQ
-I -> HS|JM|KR
-J -> HB|HC|ID|IF|IG|JL|JO|JP|KQ|KU
-K -> HC|IG|JP
-L -> MD|NH|OL|PQ
-M -> LS|LA|ME|NI|OM|OT|PR|PT|QA|RE|UN
-N -> LA|ME|ON|PT
-O -> _|a|DA|FN|GT|LS|LA|NI|OR|OT|PR|PT|QS|QA|RE|TI|UM|UN
-P -> LC|MG|NK|OP
-Q -> MD|NH|OQ|PQ|RD|TH|UL
-R -> a|DA|FN|GT|LS|LA|NI|OR|OT|PR|PT|QS|QA|RE|TI|UM|UN
-T -> LA|ME|OT|PT|QA|RE|UN
-U -> _|MD|NH|OU|PU|QB|RD|RF|TH|TJ|UL|UO
-|} ~max_level: 1 ~try_gen: false;
+|} ~cfg_orig: {|
+S -> B
+A -> _
+B -> H|AB|BG|CL|DQ|EW
+C -> AC|BH|CM|DR|EX
+D -> G|AD|BI|CN|DT|EY
+E -> AE|BJ|CO|DU|EZ
+F -> FA|GF|HK|IP|JV
+G -> _
+H -> a|FC|GH|HM|IR|JX
+I -> FD|GI|HN|IT|JY
+J -> FE|GJ|HO|IU|JZ
+K -> KA|LF|MK|NP|OV
+L -> KB|LG|ML|NQ|OW
+M -> _
+N -> KD|LI|MN|NT|OY
+O -> KE|LJ|MO|NU|OZ
+P -> PA|QF|RK|TP|UV
+Q -> X|PB|QG|RL|TQ|UW
+R -> PC|QH|RM|TR|UX
+T -> W|_
+U -> PE|QJ|RO|TU|UZ
+V -> VA|WF|XK|YP|ZV
+W -> H|VB|WG|XL|YQ|ZW
+X -> VC|WH|XM|YR|ZX
+Y -> G|VD|WI|XN|YT|ZY
+Z -> _
+|} ?cfg_optim: None ~max_level: 1 ~try_gen: false;
+  assert_pda_to_cfg ~pda: {|
+S  -[_,_->S]-> A
+A@ -[b,S->_]-> A
+   +[_,S->AAS]-> A
+   +[a,A->_]-> A
+|} ?cfg_orig: None ?cfg_optim: None ~max_level: 1 ~try_gen: false;
   assert_pda_to_cfg ~pda: {|
 S  -[_,_->S]-> A
 A@ -[b,S->_]-> A

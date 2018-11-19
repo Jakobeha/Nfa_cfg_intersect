@@ -14,6 +14,23 @@ module Term = struct
     match trm with
     | Letter l -> l
     | Variable id -> Lib.Id.to_letter id
+
+  let words_in_level lvl =
+    lvl |>
+    List.filter ~f: (List.for_all ~f: (fun trm ->
+      match trm with
+      | Letter _ -> true
+      | Variable _ -> false
+    )) |>
+    List.map ~f: (fun trms ->
+      trms |>
+      List.map ~f: (fun trm ->
+        match trm with
+        | Letter l -> l
+        | Variable _ -> assert false
+      ) |>
+      Word.of_letters_no_epsilon
+    )
 end
 
 module Derivation = struct
@@ -239,27 +256,12 @@ let term_levels cfg =
     ) |>
     List.map ~f: (List.filter ~f: (fun trm ->
       trm <> Term.Letter Letter.epsilon
-    ))
+    )) |>
+    List.stable_dedup
   )
 
 let word_levels cfg =
-  Util.Stream.map (term_levels cfg) ~f: (fun lvl ->
-    lvl |>
-    List.filter ~f: (List.for_all ~f: (fun trm ->
-      match trm with
-      | Term.Letter _ -> true
-      | Variable _ -> false
-    )) |>
-    List.map ~f: (fun lvl ->
-      lvl |>
-      List.map ~f: (fun trm ->
-        match trm with
-        | Term.Letter l -> l
-        | Variable _ -> assert false
-      ) |>
-      Word.of_letters_no_epsilon
-    )
-  )
+  Util.Stream.map (term_levels cfg) ~f: Term.words_in_level
 
 let all_words cfg =
   Util.Stream.concat (word_levels cfg)
