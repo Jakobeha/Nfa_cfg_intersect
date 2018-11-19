@@ -30,24 +30,16 @@ let assert_run f_parse f_run atm ~accepts ~rejects =
   let atm = f_parse (Lexing.from_string (String.strip atm)) in
   List.iter accepts ~f: (fun inp ->
     match f_run atm inp with
-    | Lib.Automaton.Result.Accept -> ()
+    | Lib.Run_result.Accept -> ()
     | Reject idx ->
       assert_failure (Printf.sprintf "Unexpectedly failed at %d in %S" idx inp)
   );
   List.iter rejects ~f: (fun inp ->
     match f_run atm inp with
-    | Lib.Automaton.Result.Accept ->
+    | Lib.Run_result.Accept ->
       assert_failure (Printf.sprintf "Unexpectedly succeeded in %S" inp)
     | Reject _ -> ()
   )
-
-let assert_run_cfg cfg ~accepts ~rejects =
-  let run_cfg cfg inp =
-    if Lib.Cfg.run cfg inp then
-      Lib.Automaton.Result.Accept
-    else
-      Reject (Lib.Word.length inp) in
-  assert_run Lib.Parse.cfg run_cfg cfg ~accepts ~rejects
 
 let test_cfg _ =
   assert_gen {|
@@ -60,7 +52,7 @@ C -> c
   ["ASBSA"; "x"];
   ["aASBSACBCASBSAa";"aASBSACBCxa";"aASBSAbASBSAa";"aASBSAbxa";"axCBCASBSAa";"axCBCxa";"axbASBSAa";"axbxa"];
 ];
-  assert_run_cfg {|
+  assert_run Lib.Parse.cfg Lib.Cfg.run {|
 S -> ASB|x|_
 A -> a
 B -> a|b

@@ -27,3 +27,11 @@ let print l =
     else
       Int.to_string l.int_mod
   )
+
+let char_gen =
+  Quickcheck.Generator.(union [
+    singleton 'a';
+    singleton 'b';
+    singleton 'c';
+    singleton 'd';
+  ])

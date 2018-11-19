@@ -110,7 +110,7 @@ let filter_vars cfg ~f =
 (* Removes epsilons from non-terminal derivations,
    substitutes single-term non-terminal derivations,
    removes self or mutually recursive non-terminal derivations. *)
-let optimize_inline cfg =
+let optimize_growth cfg =
   let rec inline_epsilon () =
     let again = ref false in
     Util.Array.mapi_inplace !cfg.variables ~f: (fun id var ->
@@ -143,27 +143,35 @@ let optimize_inline cfg =
     if !again then
       inline_epsilon ()
   and inline_unit () =
+    let rec inline_drvs vids id var =
+      List.concat_map var.Var.derivations ~f: (fun drv ->
+        match drv with
+        | Derivation.NonTerminal [uid] ->
+          if Id.Set.mem vids uid then
+            []
+          else
+            let uvar = Array.get !cfg.variables uid in
+            let uvar = Var.subst uvar (uid, id) in
+            inline_drvs (Id.Set.add vids uid) uid uvar
+        | _ -> [drv]
+      ) in
     Util.Array.mapi_inplace !cfg.variables ~f: (fun id var ->
-      let rec inline_drvs vids drvs =
-        List.concat_map var.Var.derivations ~f: (fun drv ->
-          match drv with
-          | NonTerminal [uid] ->
-            if Id.Set.mem vids uid then
-              []
-            else
-              let uvar = Array.get !cfg.variables uid in
-              inline_drvs (Id.Set.add vids uid) uvar.derivations
-          | _ -> [drv]
-        ) in
-      { Var.derivations = inline_drvs (Id.Set.singleton id) var.derivations;
+      { Var.derivations = inline_drvs (Id.Set.singleton id) id var;
       }
     ) in
   inline_epsilon ();
   inline_unit ()
 
 let optimize cfg =
+  let dedup () =
+    Util.Array.mapi_inplace !cfg.variables ~f: (fun id var ->
+      { Var.derivations =
+          List.dedup_and_sort var.Var.derivations ~compare;
+      }
+    ) in
   let filter_unused () =
     let _ = filter_vars cfg ~f: (fun id ->
+      (id = 0) ||
       Array.existsi !cfg.variables ~f: (fun id2 var2 ->
         (id <> id2) &&
         List.exists var2.derivations ~f: (fun drv2 ->
@@ -176,12 +184,30 @@ let optimize cfg =
     ) in ()
   and filter_empty () =
     while filter_vars cfg ~f: (fun id ->
+      (id = 0) || (
+        let var = Array.get !cfg.variables id in
+        not (List.is_empty var.derivations)
+      )
+    ) do () done
+  and filter_dups () =
+    while filter_vars cfg ~f: (fun id ->
       let var = Array.get !cfg.variables id in
-      not (List.is_empty var.derivations)
+      Array.for_alli !cfg.variables ~f: (fun id2 var2 ->
+        if (id >= id2) || (var <> var2) then
+          true
+        else (
+          Array.map_inplace !cfg.variables ~f: (fun var ->
+            Var.subst var (id, id2)
+          );
+          false
+        )
+      )
     ) do () done in
-  optimize_inline cfg;
+  optimize_growth cfg;
+  dedup ();
   filter_unused ();
-  filter_empty ()
+  filter_empty ();
+  filter_dups ()
 
 (** Gets the terminals and variables at the given level level of all
     possible parse trees. *)
@@ -238,11 +264,11 @@ let word_levels cfg =
 let all_words cfg =
   Util.Stream.concat (word_levels cfg)
 
-let run cfg w =
+let run_bool cfg w =
   let cfg = copy cfg
   and rem_lvls = ref (max 2 (Word.length w + 1))
   and res = ref false in
-  optimize_inline cfg;
+  optimize_growth cfg;
   let lvls = word_levels !cfg in
   ( try
       while not !res && !rem_lvls > 0 do
@@ -255,6 +281,12 @@ let run cfg w =
     | Stream.Failure -> ()
   );
   !res
+
+let run cfg w =
+  if run_bool cfg w then
+    Run_result.Accept
+  else
+    Run_result.Reject 0
 
 let parse vars =
   assert (not (List.is_empty vars));

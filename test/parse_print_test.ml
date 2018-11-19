@@ -29,6 +29,7 @@ let test_spda _ =
 S  -[-a]-> S
    +[+c]-> A
    +[d]-> A
+   +[-e]-> B
 A  -[_]-> A
    +[-B]-> B
 B@ -*

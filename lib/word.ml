@@ -91,3 +91,6 @@ let print_nonempty w =
     Letter.print Letter.epsilon
   else
     w
+
+let gen =
+  String.gen' Letter.char_gen

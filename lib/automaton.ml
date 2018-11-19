@@ -6,19 +6,6 @@ module Checkpoint = struct
     | Continue of 'mem * int
 end
 
-module Result = struct
-  type t =
-    | Accept
-    | Reject of Int.t
-
-  let compare a b =
-    match (a, b) with
-    | (Accept, Accept) -> 0
-    | (Accept, Reject _) -> -1
-    | (Reject _, Accept) -> 1
-    | (Reject ai, Reject bi) -> bi - ai
-end
-
 module Make (Memory : sig
   type t
 
@@ -159,9 +146,9 @@ end) = struct
       let st = Array.get atm.states fr.Frame.state_idx
       and at_end = fr.word_idx = String.length w in
       if at_end && Memory.can_accept fr.memory && st.is_accept then
-        Result.Accept
+        Run_result.Accept
       else
-        let rej = Result.Reject fr.word_idx
+        let rej = Run_result.Reject fr.word_idx
         and l =
           if at_end then
             Letter.epsilon
@@ -189,10 +176,10 @@ end) = struct
                     visited = vst2;
                   }
             ) |>
-            List.min_elt ~compare: Result.compare |>
+            List.min_elt ~compare: Run_result.compare |>
             Option.value ~default: rej
         ) |>
-        Array.min_elt ~compare: Result.compare |>
+        Array.min_elt ~compare: Run_result.compare |>
         Option.value ~default: rej in
     next Frame.init
 
