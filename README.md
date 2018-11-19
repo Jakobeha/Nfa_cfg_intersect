@@ -3,6 +3,60 @@
 Computes the intersection between a Context-Free Grammar and a
 Nondeterministic Finite Automaton
 
+## How To Use
+
+- Run the program at `out/nfa_cfg_intersect`
+- Type the CFG into the command-line, followed by `\n===\n`, followed by
+  the NFA. Then type `Ctrl-D` to signal end-of-input
+- The program should print out the intersection of the NFA and CFG
+
+Run `out/nfa_cfg_intersect --help` for more info.
+
+### Example
+
+The following
+
+```
+> nfa_cfg_intersect
+S -> _
+===
+S@ -*
+```
+
+should output
+
+```
+S -> B
+A -> _
+B -> D|AB|BD
+C -> CA|DC
+D -> _
+```
+
+### Tips
+
+If you're getting syntax errors:
+
+- Whitespace is important. Don't have any extra spaces or newlines.
+- Make sure the first id is `S` and the rest of the ids are in order.
+
+  ```
+  B -> b
+  A -> a
+  S -> A|B
+  ```
+
+  is invalid, it should be
+
+  ```
+  S -> A|B
+  A -> a
+  B -> b
+  ```
+
+- Each derivation in a CFG must be either a single letter or a sequence
+  of variables. `S -> aBC` is invalid, do `S -> ABC` and then `A -> a`.
+
 ## Algorithm Overview
 
 - Convert the CFG to a PDA
@@ -21,15 +75,12 @@ CFG
 - **Var** - # of variables in the CFG
 - **Der** - # of derivations in the CFG
 - **Der2** - Sum of the # of variables and letters in each derivation
-- **Der3** - Sum of, for each derivation, if it derives to variables,
-  the # of variables + 1, and if it derives to a letter, 1
 
 Automaton (PDA, sPDA, and NFA)
 
 - **Sta** - # of states
 - **Arr** - # of state transitions (`Arrow`s in code)
 - **Arr2** - Sum of the # of pushes, pops, letters consumed, and epsilon transitions
-- **Arr3** - **Sta^2 + Arr** (used for running time analysis)
 
 ### Examples
 
@@ -41,7 +92,15 @@ A -> BA|a
 B -> b
 ```
 
-PDA: **Sta** = 3, **Arr** = 5, **Arr2** = 8, **Arr3** = 14
+NFA: **Sta** = 2, **Arr** = 3
+
+```
+S  -a-> A
+A@ -_-> S
+   +b-> A
+```
+
+PDA: **Sta** = 3, **Arr** = 5, **Arr2** = 8
 
 ```
 S  -[a,_->a]-> S
@@ -52,7 +111,7 @@ A  -[b,a->_]-> A
 B@ -*
 ```
 
-Converted to sPDA: **Sta** = 6, **Arr** = 8, **Arr3** = 44
+Converted to sPDA: **Sta** = 6, **Arr** = 8
 
 ```
 S  -[a]-> C
