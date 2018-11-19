@@ -5,7 +5,7 @@ Nondeterministic Finite Automaton
 
 ## How To Use
 
-- Run the program at `out/nfa_cfg_intersect`
+- Run the command-line program at `out/nfa_cfg_intersect`
 - Type the CFG into the command-line, followed by `\n===\n`, followed by
   the NFA. Then type `Ctrl-D` to signal end-of-input
 - The program should print out the intersection of the NFA and CFG
@@ -38,7 +38,8 @@ D -> _
 If you're getting syntax errors:
 
 - Whitespace is important. Don't have any extra spaces or newlines.
-- Make sure the first id is `S` and the rest of the ids are in order.
+- Make sure the first variable or state is `S`, and the rest are the
+  uppercase letters in order.
 
   ```
   B -> b
@@ -127,9 +128,18 @@ E  -[-a]-> A
 
 ### Analysis
 
-For running time, considers statements like `match _ with` and
-`{ foo = bar; ... }` as **O(1)**, `Array.map` and `List.exists` as
-**O(N)**, etc.
+For running time, statements like `match _ with` and `{ foo = bar; ... }`
+are considered **O(1)**, and statements like `Array.map` and `List.exists`
+are considered **O(NF)**, where **N** is the size of the input and **F**
+is the running time of the provided function.
+
+Full algorithm:
+
+- Intersect CFG **A** and NFA **B** to form CFG **C**
+  - **Der2_C = O(Der2_A^8 * Sta_B^8)**
+  - Running time is **O(Der2_A^8 + Sta_B^8)**
+
+Steps:
 
 - CFG to PDA
   - 2 = **Sta** of PDA
@@ -156,8 +166,3 @@ For running time, considers statements like `match _ with` and
   - **2 * Sta^2 * (1 + Arr + Sta^2 + Sta)** of PDA ≥ **Der** of CFG
     - **2 * Der ≥ Der2**
   - Running time is **O(Sta^2 * (Arr + Sta^2)) = O(Sta^2 * Arr + Sta^4)**
-
-- Intersect CFG **A** and NFA **B** to form CFG **C**
-  - **2 * (Der_A + Der2_A)^4 * Sta_B^4 * (1 + 2 * (Der_A + Der2_A)^2 * Sta_B^2 + (Der_A + Der2_A)^4 * Sta_B^4) ≥ Der2_C**
-  - **Der2_C = O(Der2_A^8 * Sta_B^8)**
-  - Running time is **O(Der2_A^8 + Sta_B^8)**
