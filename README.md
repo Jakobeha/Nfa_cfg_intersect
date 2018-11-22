@@ -12,6 +12,87 @@ Nondeterministic Finite Automaton
 
 Run `out/nfa_cfg_intersect --help` for more info.
 
+## Syntax
+
+### Grammar
+
+```ebnf
+<CFG> ::= <VAR> { '\n' <VAR> }
+<VAR> ::= <ID> ' -> ' <DER> { '|' <DER> }
+<DER> ::= <ID> { <ID> }
+        | <LETTER>
+
+<NFA> ::= <AUTO(NFA_ARR)>
+<PDA> ::= <AUTO(PDA_ARR)>
+<AUTO(ARR)> ::= <STA(ARR)> { '\n' <STA(ARR)> }
+<STA(ARR)> ::= <ID> <ACCEPT?> ' -' <ARR> '-> ' <ID> { '\n   +' <ARR> '-> ' <ID> }
+<NFA_ARR> ::= <LETTER>
+<PDA_ARR> ::= '[' <LETTER> ',' <STK_LETTERS> '->' <STK_LETTERS> ']'
+<STK_LETTERS> ::= <STK_LETTER> { <STK_LETTER> }
+                | '_'
+<STK_LETTER> ::= 'A' - 'Z'
+               | 'a' - 'z'
+
+<ID>  ::= 'A' - 'Z'
+<LETTER> ::= ( 'a' - 'z' | '_' )
+```
+
+#### Informal
+
+- In CFGs, lowercase letters are terminals, and uppercase letters are variables
+  (nonterminals). In automata, lowercase letters are symbols, and uppercase
+  letters are state IDs. The "alphabet" of both is the lowercase English
+  alphabet. However, the alphabet of the PDA's stack also contains uppercase
+  letters, which are used in CFG-PDA conversion to represent the CFG's nonterminals
+  (not to be confused with a nonterminals or state IDs themselves).
+- Underscore `_` is a stand-in for epsilon `ε`. Underscore is used instead
+  because ocammlex doesn't support unicode, and it's easier to type.
+- `S` is the start state in an automata, and the start variable in a CFG.
+- The syntax of NFAs is essentially a set of transitions: `A -a-> B` represents a transition from state A to B consuming the letter "a", and `B -_-> C` represents a transition from state B to C not consuming anything (epsilon), etc. The pluses define multiple transitions from the same state, e.g.
+
+  ```
+  A  -a-> B
+     +b-> C
+     +c-> D
+  ```
+
+  is roughly equivalent to
+
+  ```
+  A  -a-> B
+  A  -b-> C
+  A  -c-> D
+  ```
+
+  (except the syntax doesn't allow the latter).
+- Define a state with no transitions like so: `A -*`
+- A state is an accept state if it has an `@` after it, e.g. in
+
+  ```
+  S  -a-> B
+  A@ -b-> S
+     +c-> B
+  B  -b-> A
+     +c-> C
+  C@ -*
+  ```
+
+  A and C are accept states (and C has no transitions).
+- The syntax of PDAs is very similar to NFAs. The only difference is that,
+  for each transition, you don't just specify a letter to consume, you also
+  specify what letters to push and pop off the stack. For example:
+
+  ```
+  S  -[a,_->b]-> A
+     +[_,c->def]-> G
+  ```
+
+  Specifies that the state `S` has 2 transitions. The first transition
+  consumes the letter `a`, pushes `b` onto the stack, and moves to state
+  `A`. The second transition doesn't consume anything (epsilon), pops `c`
+  from the stack, and pushes `d`, `e`, and `f`, *in that order* (so `f` will
+  be at the top of the stack).
+
 ### Example
 
 The following
@@ -83,7 +164,7 @@ Automaton (PDA, sPDA, and NFA)
 - **Arr** - # of state transitions (`Arrow`s in code)
 - **Arr2** - Sum of the # of pushes, pops, letters consumed, and epsilon transitions
 
-### Examples
+#### Examples
 
 CFG: **Der** = 6, **Var** = 9
 
